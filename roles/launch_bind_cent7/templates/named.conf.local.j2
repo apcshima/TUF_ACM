@@ -1,12 +1,12 @@
-zone "{{ domain }}" IN {
+zone "example.jp" IN {
     type master;
-    file "/etc/named/zones/db.{{ domain }}";
+    file "/etc/named/zones/db.example.jp";
     allow-update { key rndc-key; };
 };
 
-zone "{{ rev_domain }}" IN {
+zone "79.168.192.in-addr.arpa" IN {
     type master;
-    file "/etc/named/zones/db.{{ rev_domain }}";
+    file "/etc/named/zones/db.79.168.192.in-addr.arpa";
     allow-update {key rndc-key; };
 };
 
