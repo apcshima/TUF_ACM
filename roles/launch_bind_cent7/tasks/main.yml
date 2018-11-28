@@ -16,7 +16,6 @@
     owner: root
     group: named
     mode: 0660
-  notify: restart named
 
 - name: Make named directory
   file:
@@ -33,8 +32,6 @@
     owner: root
     group: named
     mode: 0640
-  notify: restart named
-
 
 - name: Make zones Directory
   file:
@@ -51,8 +48,6 @@
     owner: root
     group: named
     mode: 0640
-  notify: restart named
-
 
 - name: Copy reverse file
   template:
@@ -61,4 +56,8 @@
     owner: root
     group: named
     mode: 0640
-  notify: restart named
+
+- name: restart named
+  service:
+    name: named
+    state: restarted
