@@ -1,13 +1,13 @@
 $TTL 604800     ; 1 week
-@       IN SOA  {{ ansible_fqdn }}. root.{{ domain }}. (
+@       IN SOA  ns1.example.jp. root.example.jp. (
                                 8          ; serial
                                 604800     ; refresh (1 week)
                                 86400      ; retry (1 day)
                                 2419200    ; expire (4 weeks)
                                 604800     ; minimum (1 week)
                                 )
-                        NS      {{ ansible_fqdn }}.
-$ORIGIN {{ domain }}.
+                        NS      ns1.example.jp.
+$ORIGIN example.jp.
 $TTL 300        ; 5 minutes
 $TTL 604800     ; 1 week
 erl      A 10.1.30.1
