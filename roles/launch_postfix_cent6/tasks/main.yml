@@ -1,0 +1,75 @@
+---
+  - name: Installs postfix mail server
+    yum: pkg=postfix state=installed update_cache=true
+    notify:
+      start postfix
+  - name: Upload gmail authentication info
+    copy: src=postfix-gmail-password dest=/etc/postfix/sasl_passwd mode=0600 owner=root group=root
+    register: gmail
+    notify:
+     - postmap sasl_passwd
+  - name: remove empty mailrelay line
+    lineinfile: dest=/etc/postfix/main.cf line="relayhost = " state=absent
+  - name: Append gmail relay config
+    lineinfile:
+      dest=/etc/postfix/main.cf
+      line=""
+    with_items:
+      - { line: 'smtp_sasl_auth_enable = yes' }
+      - { line: 'smtp_sasl_password_maps = hash:/etc/postfix/sasl_passwd' }
+      - { line: 'smtp_sasl_security_options = noanonymous' }
+      - { line: 'smtp_use_tls = yes' }
+      - { line: 'relayhost = [smtp.gmail.com]:587' }
+      - { line: 'smtp_tls_security_level = may' }
+    notify:
+      - restart postfix
+
+  - name: change main.cf 1
+    lineinfile:
+      dest=/etc/postfix/main.cf
+      state=present
+      regexp="#myhostname = host.domain.tld"
+      line="myhostname = mail.example.com"
+
+  - name: change main.cf 2
+    lineinfile:
+      dest=/etc/postfix/main.cf
+      state=present
+      regexp="#mydomain = domain.tld"
+      line="mydomain = example.com"
+
+  - name: change main.cf 3
+    lineinfile:
+      dest=/etc/postfix/main.cf
+      state=present
+      regexp="#myorigin = $mydomain"
+      line="myorigin = $mydomain"
+
+  - name: change main.cf 4
+    lineinfile:
+      dest=/etc/postfix/main.cf
+      state=present
+      regexp="#inet_interfaces = all"
+      line="inet_interfaces = all"
+
+  - name: change main.cf 5
+    lineinfile:
+      dest=/etc/postfix/main.cf
+      state=present
+      regexp="#mynetworks = 168.100.189.0/28, 127.0.0.0/8"
+      line="mynetworks = {{ ansible_all_ipv4_addresses }}/24, 127.0.0.0/8"
+
+  - name: open 25 port
+    iptables:
+      comment: allow smtp access
+      chain: INPUT
+      protocol: tcp
+      destination_port: 25
+      jump: ACCEPT
+  - name: open 587 port
+    iptables:
+      comment: allow smtp access
+      chain: INPUT
+      protocol: tcp
+      destination_port: 587
+      jump: ACCEPT
