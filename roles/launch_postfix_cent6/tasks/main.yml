@@ -3,13 +3,16 @@
     yum: pkg=postfix state=latest update_cache=true
     notify:
       start postfix
+      
   - name: Upload gmail authentication info
     copy: src=postfix-gmail-password dest=/etc/postfix/sasl_passwd mode=0600 owner=root group=root
     register: gmail
     notify:
      - postmap sasl_passwd
+     
   - name: remove empty mailrelay line
     lineinfile: dest=/etc/postfix/main.cf line="relayhost = " state=absent
+    
   - name: Append gmail relay config
     lineinfile:
       dest=/etc/postfix/main.cf
@@ -66,6 +69,7 @@
       protocol: tcp
       destination_port: 25
       jump: ACCEPT
+      
   - name: open 587 port
     iptables:
       comment: allow smtp access
