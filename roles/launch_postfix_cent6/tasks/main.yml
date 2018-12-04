@@ -1,6 +1,6 @@
 ---
   - name: Installs postfix mail server
-    yum: pkg=postfix state=installed update_cache=true
+    yum: pkg=postfix state=latest update_cache=true
     notify:
       start postfix
   - name: Upload gmail authentication info
