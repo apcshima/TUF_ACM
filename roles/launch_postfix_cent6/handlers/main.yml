@@ -1,0 +1,10 @@
+---
+  - name: start postfix
+    service: name=postfix state=started
+  - name: make sure postfix user owns postfix dir
+    command: sudo chown postfix /etc/postfix
+  - name: postmap sasl_passwd
+    command: postmap /etc/postfix/sasl_passwd
+    when: gmail|success
+  - name: restart postfix
+    service: name=postfix state=restarted
