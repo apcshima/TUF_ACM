@@ -32,14 +32,14 @@
       dest=/etc/postfix/main.cf
       state=present
       regexp="#myhostname = host.domain.tld"
-      line="myhostname = mail.example.com"
+      line="myhostname = mail.example.jp"
 
   - name: change main.cf 2
     lineinfile:
       dest=/etc/postfix/main.cf
       state=present
       regexp="#mydomain = domain.tld"
-      line="mydomain = example.com"
+      line="mydomain = example.jp"
 
   - name: change main.cf 3
     lineinfile:
@@ -61,19 +61,3 @@
       state=present
       regexp="#mynetworks = 168.100.189.0/28, 127.0.0.0/8"
       line="mynetworks = {{ ansible_all_ipv4_addresses }}/24, 127.0.0.0/8"
-
-  - name: open 25 port
-    iptables:
-      comment: allow smtp access
-      chain: INPUT
-      protocol: tcp
-      destination_port: 25
-      jump: ACCEPT
-      
-  - name: open 587 port
-    iptables:
-      comment: allow smtp access
-      chain: INPUT
-      protocol: tcp
-      destination_port: 587
-      jump: ACCEPT
