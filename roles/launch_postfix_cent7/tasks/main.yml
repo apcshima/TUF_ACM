@@ -60,4 +60,4 @@
       dest=/etc/postfix/main.cf
       state=present
       regexp="#mynetworks = 168.100.189.0/28, 127.0.0.0/8"
-      line="mynetworks = {{ ansible_all_ipv4_addresses }}/24, 127.0.0.0/8"
+      line="mynetworks = 192.168.79.0/24, 127.0.0.0/8"
