@@ -249,8 +249,8 @@ unknown_local_recipient_reject_code = 550
 # only the local machine.
 #
 #mynetworks_style = class
-mynetworks_style = subnet
-#mynetworks_style = host
+#mynetworks_style = subnet
+mynetworks_style = host
 
 # Alternatively, you can specify the mynetworks list by hand, in
 # which case Postfix ignores the mynetworks_style setting.
@@ -263,7 +263,7 @@ mynetworks_style = subnet
 # of listing the patterns here. Specify type:table for table-based lookups
 # (the value on the table right-hand side is not used).
 #
-#mynetworks = 168.100.189.0/28, 127.0.0.0/8
+mynetworks = 127.0.0.0/8
 #mynetworks = $config_directory/mynetworks
 #mynetworks = hash:/etc/postfix/network_table
 
